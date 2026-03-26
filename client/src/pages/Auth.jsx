@@ -5,15 +5,20 @@ import { motion } from "motion/react"
 import { FcGoogle } from "react-icons/fc";
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../utils/firebase';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import axios from 'axios';
 import { ServerUrl } from '../utils/serverUrl';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../redux/userSlice';
 function Auth({isModel = false}) {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     const handleGoogleAuth = async () => {
         console.log("handleGoogleAuth started");
+        setLoading(true)
         try {
             const response = await signInWithPopup(auth,provider)
             console.log("Firebase signInWithPopup success:", response.user.email);
@@ -23,12 +28,17 @@ function Auth({isModel = false}) {
             const result = await axios.post(ServerUrl + "/api/auth/google" , {name , email} , {withCredentials:true})
             console.log("Backend auth success:", result.data);
             dispatch(setUserData(result.data))
-
-
+            
+            if(!isModel) {
+                navigate("/")
+            }
             
         } catch (error) {
-            console.log(error)
-              dispatch(setUserData(null))
+            console.log("Auth error:", error)
+            alert("Authentication failed: " + (error.response?.data?.message || error.message || "Unknown error"))
+            dispatch(setUserData(null))
+        } finally {
+            setLoading(false)
         }
     }
   return (
@@ -69,12 +79,22 @@ function Auth({isModel = false}) {
 
             <motion.button 
                 onClick={handleGoogleAuth}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className='w-full flex items-center justify-center gap-3 py-3.5 bg-black text-white rounded-full shadow-lg hover:shadow-xl transition-all cursor-pointer font-semibold'
+                disabled={loading}
+                whileHover={{ scale: loading ? 1 : 1.02 }}
+                whileTap={{ scale: loading ? 1 : 0.98 }}
+                className={`w-full flex items-center justify-center gap-3 py-3.5 bg-black text-white rounded-full shadow-lg transition-all font-semibold ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-xl cursor-pointer'}`}
             >
-                <FcGoogle size={22}/>
-                Continue with Google
+                {loading ? (
+                    <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Connecting...
+                    </div>
+                ) : (
+                    <>
+                        <FcGoogle size={22}/>
+                        Continue with Google
+                    </>
+                )}
             </motion.button>
         </motion.div>
 
