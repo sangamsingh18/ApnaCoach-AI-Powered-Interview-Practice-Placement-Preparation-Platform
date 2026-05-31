@@ -6,6 +6,8 @@ import Step3Report from '../components/Step3Report'
 
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { FaArrowLeft } from 'react-icons/fa';
+import Logo from "../components/Logo";
 
 function InterviewPage({ stepProp = 1 }) {
     const [step,setStep] = useState(stepProp)
@@ -15,18 +17,30 @@ function InterviewPage({ stepProp = 1 }) {
     const navigate = useNavigate()
 
   return (
-    <div className='min-h-screen bg-gray-50 flex flex-col'>
-        <header className='bg-white border-b border-gray-200 px-5 md:px-8 py-3 flex items-center shadow-sm'>
+    <div className='min-h-screen bg-gray-50 dark:bg-[#090d16] flex flex-col transition-colors duration-200'>
+        <header className='bg-white dark:bg-[#111827] border-b border-gray-200 dark:border-gray-800 px-5 md:px-8 py-3 flex items-center gap-4 shadow-sm transition-colors duration-200'>
+            <button
+                onClick={() => {
+                    if (step === 2) {
+                        if (window.confirm("Are you sure you want to leave the interview? Your progress will be lost.")) {
+                            navigate("/");
+                        }
+                    } else if (step === 3) {
+                        navigate("/history");
+                    } else {
+                        navigate("/");
+                    }
+                }}
+                className='p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-gray-300 flex items-center justify-center cursor-pointer'
+                aria-label="Go back"
+            >
+                <FaArrowLeft className="text-base md:text-lg" />
+            </button>
             <div 
                 onClick={() => navigate("/")}
-                className='flex items-center gap-3 cursor-pointer hover:opacity-80 transition'
+                className='flex items-center cursor-pointer hover:opacity-80 transition'
             >
-                <img 
-                    src="/favicon.png" 
-                    alt="ApnaCoach Logo" 
-                    className='h-10 md:h-12 w-auto'
-                />
-                <span className='font-bold text-xl text-gray-800 tracking-tight'>ApnaCoach</span>
+                <Logo />
             </div>
         </header>
 

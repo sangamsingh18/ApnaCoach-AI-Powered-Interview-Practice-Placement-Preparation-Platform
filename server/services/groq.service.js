@@ -40,7 +40,7 @@ const extractJson = (text) => {
     }
 };
 
-export const askAi = async (messages, options = {}) => {
+export const askAi = async (messages, options = {}, retries = 3) => {
     try {
         if (!messages || !Array.isArray(messages) || messages.length === 0) {
             throw new Error("Messages array is empty.");
@@ -51,6 +51,10 @@ export const askAi = async (messages, options = {}) => {
             messages: messages,
             temperature: options.temperature ?? 0.7,
         };
+
+        if (options.max_tokens) {
+            payload.max_tokens = options.max_tokens;
+        }
 
         // If JSON mode is requested or if the prompt implies JSON
         if (options.json || messages.some(m => m.content.toLowerCase().includes("json"))) {
@@ -85,6 +89,19 @@ export const askAi = async (messages, options = {}) => {
 
         return content;
     } catch (error) {
+        const isRateLimit = error.response?.status === 429 || 
+                            (error.response?.data?.error?.message && error.response.data.error.message.toLowerCase().includes("rate limit"));
+                            
+        if (isRateLimit && retries > 0) {
+            const msg = error.response?.data?.error?.message || "";
+            const match = msg.match(/try again in ([\d\.]+)s/i);
+            const waitMs = match ? Math.ceil(parseFloat(match[1]) * 1000) + 1000 : 3000;
+            
+            console.warn(`Groq Rate Limit hit. Retrying in ${waitMs / 1000}s... (${retries} retries left)`);
+            await new Promise(resolve => setTimeout(resolve, waitMs));
+            return askAi(messages, options, retries - 1);
+        }
+
         console.error("Groq Error:", error.response?.data || error.message);
         throw new Error("Groq API Error: " + (error.response?.data?.error?.message || error.message));
     }

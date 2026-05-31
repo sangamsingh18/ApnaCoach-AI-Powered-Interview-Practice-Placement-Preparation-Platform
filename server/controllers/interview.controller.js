@@ -85,11 +85,12 @@ Return strictly JSON:
 export const generateQuestion = async (req, res) => {
   try {
     console.log("generateQuestion hit:", req.body);
-    let { role, experience, mode, resumeText, projects, skills } = req.body
+    let { role, experience, mode, resumeText, projects, skills, numQuestions = 5, difficulty = "medium" } = req.body
 
     role = role?.trim();
     experience = experience?.trim();
     mode = mode?.trim();
+    difficulty = difficulty?.trim();
 
     if (!role || !experience || !mode) {
       console.log("Missing fields:", { role, experience, mode });
@@ -138,8 +139,9 @@ export const generateQuestion = async (req, res) => {
       });
     }
 
-    const messages = [
+    const diffStr = difficulty === "expert" ? "Expert / Advanced" : difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
 
+    const messages = [
       {
         role: "system",
         content: `
@@ -147,16 +149,15 @@ You are a real human interviewer conducting a professional interview.
 
 Speak in simple, natural English as if you are directly talking to the candidate.
 
-Generate exactly 5 interview questions.
+Generate exactly ${numQuestions} interview questions.
+Difficulty Level Mode: ${diffStr} (Make all questions strictly conform to this difficulty level).
 
 Return strictly JSON in this format:
 {
   "questions": [
-    "Question 1 (easy)",
-    "Question 2 (easy)",
-    "Question 3 (medium)",
-    "Question 4 (medium)",
-    "Question 5 (hard)"
+    "Question 1",
+    "Question 2",
+    ...
   ]
 }
 
@@ -168,42 +169,31 @@ Strict Rules:
 - Do NOT add extra text before or after.
 - Keep language simple and conversational.
 - Questions must feel practical and realistic.
-
-Difficulty progression:
-Question 1 → easy  
-Question 2 → easy  
-Question 3 → medium  
-Question 4 → medium  
-Question 5 → hard  
+- Make all questions strictly ${diffStr} difficulty.
 
 Make questions based on the candidate’s role, experience, interviewMode, projects, skills, and resume details.
 `
-      }
-      ,
+      },
       {
         role: "user",
         content: userPrompt
       }
     ];
 
-
     const aiResponse = await askAi(messages, { json: true, returnParsed: true })
 
     if (!aiResponse || !aiResponse.questions || !Array.isArray(aiResponse.questions)) {
-           
       return res.status(500).json({
         message: "AI returned empty or invalid response."
       });
-
     }
 
     const questionsArray = aiResponse.questions
       .map(q => q.trim())
       .filter(q => q.length > 0)
-      .slice(0, 5);
+      .slice(0, numQuestions);
 
     if (questionsArray.length === 0) {
-      
       return res.status(500).json({
         message: "AI failed to generate questions."
       });
@@ -212,16 +202,24 @@ Make questions based on the candidate’s role, experience, interviewMode, proje
     user.credits -= 50;
     await user.save();
 
+    const timeLimits = {
+      easy: 60,
+      medium: 90,
+      hard: 120,
+      expert: 150
+    };
+    const defaultTimeLimit = timeLimits[difficulty] || 90;
+
     const interview = await Interview.create({
       userId: user._id,
       role,
       experience,
       mode,
       resumeText: safeResume,
-      questions: questionsArray.map((q, index) => ({
+      questions: questionsArray.map((q) => ({
         question: q,
-        difficulty: ["easy", "easy", "medium", "medium", "hard"][index],
-        timeLimit: [60, 60, 90, 90, 120][index],
+        difficulty: difficulty,
+        timeLimit: defaultTimeLimit,
       }))
     })
 

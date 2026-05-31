@@ -1,5 +1,4 @@
-import React from 'react'
-import { BsRobot } from "react-icons/bs";
+import React from 'react';
 import { IoSparkles } from "react-icons/io5";
 import { motion } from "motion/react"
 import { FcGoogle } from "react-icons/fc";
@@ -11,6 +10,8 @@ import axios from 'axios';
 import { ServerUrl } from '../utils/serverUrl';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../redux/userSlice';
+import Logo from "../components/Logo";
+
 function Auth({isModel = false}) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -44,7 +45,7 @@ function Auth({isModel = false}) {
   return (
     <div className={`
       w-full 
-      ${isModel ? "py-4" : "min-h-screen bg-[#f3f3f3] flex items-center justify-center px-6 py-20"}
+      ${isModel ? "py-4" : "min-h-screen bg-[#f3f3f3] dark:bg-[#090d16] flex items-center justify-center px-6 py-20 transition-colors duration-200"}
     `}>
         <motion.div 
         initial={{opacity:0 , y:-40}} 
@@ -53,26 +54,21 @@ function Auth({isModel = false}) {
         className={`
         w-full 
         ${isModel ? "max-w-md p-8 rounded-3xl" : "max-w-lg p-12 rounded-[32px]"}
-        bg-white shadow-2xl border border-gray-200
+        bg-white dark:bg-[#111827] shadow-2xl border border-gray-200 dark:border-gray-800 transition-colors duration-200
       `}>
-            <div className='flex items-center justify-center gap-3 mb-6'>
-                <div className='bg-black text-white p-2 rounded-lg'>
-                    <BsRobot size={18}/>
-
-                </div>
-                <h2 className='font-semibold text-lg'>ApnaCoach</h2>
+            <div className='flex items-center justify-center mb-6'>
+                <Logo />
             </div>
 
-            <h1 className='text-2xl md:text-3xl font-semibold text-center leading-snug mb-4'>
+            <h1 className='text-2xl md:text-3xl font-semibold text-center leading-snug mb-4 text-gray-900 dark:text-white'>
                 Continue with
-                <span className='bg-green-100 text-green-600 px-3 py-1 rounded-full inline-flex items-center gap-2'>
+                <span className='bg-green-100 text-green-600 dark:bg-emerald-950/30 dark:text-emerald-400 px-3 py-1 rounded-full inline-flex items-center gap-2'>
                     <IoSparkles size={16}/>
-                    AI Smart Interview
-
+                    ApnaCoach AI
                 </span>
             </h1>
 
-            <p className='text-gray-500 text-center text-sm md:text-base leading-relaxed mb-8'>
+            <p className='text-gray-500 dark:text-gray-400 text-center text-sm md:text-base leading-relaxed mb-8'>
                 Sign in to start AI-powered mock interviews,
         track your progress, and unlock detailed performance insights.
             </p>

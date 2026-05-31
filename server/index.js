@@ -8,6 +8,10 @@ import authRouter from "./routes/auth.route.js"
 import userRouter from "./routes/user.route.js"
 import interviewRouter from "./routes/interview.route.js"
 import paymentRouter from "./routes/payment.route.js"
+import resumeRouter from "./routes/resume.route.js"
+import questionsRouter from "./routes/questions.route.js"
+import evaluateRouter from "./routes/evaluate.route.js"
+import placementRouter from "./routes/placement.route.js"
 
 const app = express()
 app.use(cors({
@@ -23,10 +27,24 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 
+app.get("/", (req, res) => {
+    res.send(`
+        <div style="font-family: sans-serif; text-align: center; padding: 50px;">
+            <h1 style="color: #059669;">ApnaCoach Backend API</h1>
+            <p>The backend services are running successfully on port 8000.</p>
+            <p>Please navigate to the frontend app at <a href="http://localhost:5173" style="color: #059669; font-weight: bold; text-decoration: none;">http://localhost:5173</a> to start using the platform.</p>
+        </div>
+    `);
+})
+
 app.use("/api/auth", authRouter)
 app.use("/api/user", userRouter)
 app.use("/api/interview", interviewRouter)
 app.use("/api/payment", paymentRouter)
+app.use("/api/resume", resumeRouter)
+app.use("/api/questions", questionsRouter)
+app.use("/api/evaluate", evaluateRouter)
+app.use("/api/placement", placementRouter)
 
 const PORT = process.env.PORT || 6000
 app.listen(PORT, () => {

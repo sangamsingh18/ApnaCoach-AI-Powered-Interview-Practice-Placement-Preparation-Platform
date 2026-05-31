@@ -1,4 +1,21 @@
 @import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #f3f3f3;
+  color: #1f2937;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dark body {
+  background-color: #090d16;
+  color: #f3f4f6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif;
+}
 
 @layer base {
 
