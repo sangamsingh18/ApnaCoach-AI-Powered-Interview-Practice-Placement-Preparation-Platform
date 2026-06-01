@@ -58,7 +58,11 @@ function Navbar() {
             setPendingPath(path);
             setShowLeaveModal(true);
         } else {
-            navigate(path);
+            if (path === "logout") {
+                handleLogout();
+            } else {
+                navigate(path);
+            }
         }
     };
 
