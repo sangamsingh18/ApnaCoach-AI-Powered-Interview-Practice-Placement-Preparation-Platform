@@ -999,6 +999,9 @@ export default function PlacementTestPage() {
   if (step === "test") {
     const q = questions[currentQ];
     const isMCQ = currentTest === 1 || currentTest === 3;
+    const normalizedOpts = q ? normalizeOptions(q.options) : [];
+    const correctOpt = q ? normalizedOpts.find(o => isCorrectAnswer(o, q)) : null;
+    const correctLabel = correctOpt ? correctOpt.label : (q?.correct_answer || "A");
 
     return (
       <div className="min-h-screen bg-[#f3f3f3] dark:bg-[#090d16] flex flex-col font-sans transition-colors duration-200">
