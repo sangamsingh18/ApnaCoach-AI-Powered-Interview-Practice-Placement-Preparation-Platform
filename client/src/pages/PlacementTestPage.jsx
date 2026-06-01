@@ -478,10 +478,24 @@ export default function PlacementTestPage() {
       setTestAnswers((prev) => [...prev, feedback.score]);
 
       if (feedback.strengths) {
-        setAllStrengths((s) => [...s, ...feedback.strengths]);
+        setAllStrengths((s) => {
+          if (Array.isArray(feedback.strengths)) {
+            return [...s, ...feedback.strengths];
+          } else if (typeof feedback.strengths === 'string') {
+            return [...s, feedback.strengths];
+          }
+          return s;
+        });
       }
       if (feedback.weaknesses) {
-        setAllWeaknesses((w) => [...w, ...feedback.weaknesses]);
+        setAllWeaknesses((w) => {
+          if (Array.isArray(feedback.weaknesses)) {
+            return [...w, ...feedback.weaknesses];
+          } else if (typeof feedback.weaknesses === 'string') {
+            return [...w, feedback.weaknesses];
+          }
+          return w;
+        });
       }
     } catch (err) {
       console.error(err);
@@ -1142,13 +1156,25 @@ export default function PlacementTestPage() {
                         <div className="bg-green-50/10 dark:bg-green-950/5 border border-green-100 dark:border-green-900/20 p-3 rounded-lg">
                           <strong className="text-green-700 dark:text-green-400">✅ Strengths:</strong>
                           <ul className="list-disc list-inside mt-1.5 space-y-1 text-gray-500 dark:text-gray-400">
-                            {answerFeedback.strengths?.map((s, i) => <li key={i}>{s}</li>)}
+                            {Array.isArray(answerFeedback.strengths) ? (
+                              answerFeedback.strengths.map((s, i) => <li key={i}>{s}</li>)
+                            ) : typeof answerFeedback.strengths === 'string' && answerFeedback.strengths ? (
+                              <li>{answerFeedback.strengths}</li>
+                            ) : (
+                              <li className="list-none text-gray-400 italic">No specific strengths noted.</li>
+                            )}
                           </ul>
                         </div>
                         <div className="bg-red-50/10 dark:bg-red-950/5 border border-red-100 dark:border-red-900/20 p-3 rounded-lg">
                           <strong className="text-red-600 dark:text-red-400">❌ Weaknesses:</strong>
                           <ul className="list-disc list-inside mt-1.5 space-y-1 text-gray-500 dark:text-gray-400">
-                            {answerFeedback.weaknesses?.map((w, i) => <li key={i}>{w}</li>)}
+                            {Array.isArray(answerFeedback.weaknesses) ? (
+                              answerFeedback.weaknesses.map((w, i) => <li key={i}>{w}</li>)
+                            ) : typeof answerFeedback.weaknesses === 'string' && answerFeedback.weaknesses ? (
+                              <li>{answerFeedback.weaknesses}</li>
+                            ) : (
+                              <li className="list-none text-gray-400 italic">No specific weaknesses noted.</li>
+                            )}
                           </ul>
                         </div>
                       </div>

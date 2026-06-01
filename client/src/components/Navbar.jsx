@@ -72,7 +72,7 @@ function Navbar() {
                 <button onClick={()=>{ if(!userData){ setShowAuth(true); return; } navigate("/guidance"); }} className='hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-200 cursor-pointer relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-emerald-500 hover:after:w-full after:transition-all after:duration-300'>Guidance</button>
             </div>
 
-            <div className='flex items-center gap-3 md:gap-4 relative flex-shrink-0'>
+            <div className='flex items-center gap-2 sm:gap-3 md:gap-4 relative flex-shrink-0'>
                 {/* Mobile Menu Toggle Button */}
                 <button
                     onClick={() => {
@@ -80,7 +80,7 @@ function Navbar() {
                         setShowCreditPopup(false);
                         setShowUserPopup(false);
                     }}
-                    className='lg:hidden p-2.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors duration-200 cursor-pointer flex items-center justify-center'
+                    className='lg:hidden p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors duration-200 cursor-pointer flex items-center justify-center'
                     title="Toggle Menu"
                 >
                     {showMobileMenu ? <FaTimes size={18} /> : <FaBars size={18} />}
@@ -94,7 +94,7 @@ function Navbar() {
                         }
                         navigate("/interview");
                     }}
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-full text-xs md:text-sm shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/40 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-full text-xs md:text-sm shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/40 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer hidden sm:block"
                 >
                     Start Interview
                 </button>
@@ -102,13 +102,13 @@ function Navbar() {
                 {/* Dark/Light mode switcher */}
                 <button
                     onClick={toggleTheme}
-                    className="p-2.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors duration-200 cursor-pointer flex items-center justify-center"
+                    className="p-2.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors duration-200 cursor-pointer flex items-center justify-center hidden sm:flex"
                     title="Toggle Theme"
                 >
                     {theme === "dark" ? <BsSun size={18} /> : <BsMoonStars size={18} />}
                 </button>
 
-                <div className='relative'>
+                <div className='relative hidden sm:block'>
                     <button onClick={()=>{
                         if(!userData){
                             setShowAuth(true)
@@ -165,13 +165,70 @@ function Navbar() {
                     initial={{ opacity: 0, y: -15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
-                    className='absolute top-[calc(100%+12px)] left-4 right-4 bg-white/95 dark:bg-[#111827]/95 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800/80 p-5 flex flex-col gap-3 z-[99] lg:hidden text-left'
+                    className='absolute top-[calc(100%+12px)] left-4 right-4 bg-white/95 dark:bg-[#111827]/95 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800/80 p-5 flex flex-col gap-4 z-[99] lg:hidden text-left'
                 >
-                    <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/placement-test"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>Placement Exam</button>
-                    <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/roadmap"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>Roadmaps</button>
-                    <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/company-prep"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>Company Preparation</button>
-                    <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/resume-tips"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>ATS Checker</button>
-                    <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/guidance"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>Guidance</button>
+                    {/* User profile & credits card (only visible on mobile drawer if screen is small) */}
+                    {userData && (
+                        <div className='flex items-center justify-between p-3 bg-gray-55/35 dark:bg-gray-800/50 rounded-xl border border-gray-100 dark:border-gray-800/60 mb-2'>
+                            <div className='flex items-center gap-2.5'>
+                                <div className='w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-sm'>
+                                    {userData.name ? userData.name.slice(0,1).toUpperCase() : 'U'}
+                                </div>
+                                <div className='truncate max-w-[130px]'>
+                                    <p className='text-xs font-bold text-gray-800 dark:text-gray-200'>{userData.name}</p>
+                                    <p className='text-[10px] text-gray-400 dark:text-gray-500'>Logged In</p>
+                                </div>
+                            </div>
+                            <div className='flex items-center gap-1 bg-yellow-500/10 dark:bg-yellow-500/5 text-yellow-600 dark:text-yellow-400 px-3 py-1 rounded-full border border-yellow-500/25 text-[10px] font-extrabold'>
+                                <BsCoin size={13} />
+                                {userData.credits || 0} Credits
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Start Interview CTA button inside Mobile Menu */}
+                    <button 
+                        onClick={() => { 
+                            setShowMobileMenu(false); 
+                            if (!userData) { setShowAuth(true); return; } 
+                            navigate("/interview"); 
+                        }} 
+                        className='sm:hidden w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-4 rounded-xl shadow-md transition cursor-pointer text-sm mb-2'
+                    >
+                        Start Interview 🚀
+                    </button>
+
+                    {/* Navigation Links */}
+                    <div className='flex flex-col gap-1 border-b dark:border-gray-800 pb-3'>
+                        <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/placement-test"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>Placement Exam</button>
+                        <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/roadmap"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>Roadmaps</button>
+                        <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/company-prep"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>Company Preparation</button>
+                        <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/resume-tips"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>ATS Checker</button>
+                        <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/guidance"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>Guidance</button>
+                    </div>
+
+                    {/* Dark/Light mode selector row in Mobile Menu */}
+                    <div className='flex items-center justify-between px-4 py-2 text-sm font-bold text-gray-700 dark:text-gray-300 sm:hidden'>
+                        <span>Toggle Theme</span>
+                        <button
+                            onClick={toggleTheme}
+                            className="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors duration-200 cursor-pointer flex items-center justify-center"
+                            title="Toggle Theme"
+                        >
+                            {theme === "dark" ? <BsSun size={18} /> : <BsMoonStars size={18} />}
+                        </button>
+                    </div>
+
+                    {/* Log out option inside Mobile Drawer for logged in user */}
+                    {userData && (
+                        <button 
+                            onClick={() => { setShowMobileMenu(false); handleLogout(); }}
+                            className='sm:hidden w-full text-left font-bold py-2.5 px-4 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-950/10 transition-all cursor-pointer text-sm flex items-center gap-2'
+                        >
+                            <HiOutlineLogout size={16}/>
+                            Logout
+                        </button>
+                    )}
                 </motion.div>
             )}
         </motion.div>
