@@ -14,13 +14,19 @@ import evaluateRouter from "./routes/evaluate.route.js"
 import placementRouter from "./routes/placement.route.js"
 
 const app = express()
+const allowedOrigins = [
+    "http://localhost:5173", 
+    "http://localhost:5174", 
+    "http://localhost:5175",
+    "https://apnacoach.onrender.com"
+];
+
+if (process.env.FRONTEND_URL) {
+    allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 app.use(cors({
-    origin: [
-        "http://localhost:5173", 
-        "http://localhost:5174", 
-        "http://localhost:5175",
-        "https://apnacoach.onrender.com"
-    ],
+    origin: allowedOrigins,
     credentials: true
 }))
 
