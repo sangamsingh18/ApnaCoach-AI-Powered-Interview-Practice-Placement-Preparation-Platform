@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import Navbar from "../components/Navbar";
@@ -133,6 +133,19 @@ const COMPANY_REGISTRY = {
   redhat: { name: "Red Hat", fullName: "Red Hat India", difficulty: "hard", package: "14 - 32 LPA", locations: ["Bangalore", "Pune"], type: "Other Top", techStack: ["Go/Python", "Linux Kernel", "Kubernetes", "Ansible"], category: "other" },
   vmware: { name: "VMware", fullName: "VMware India", difficulty: "hard", package: "18 - 38 LPA", locations: ["Bangalore", "Pune"], type: "Other Top", techStack: ["Java/C++", "Virtualization layer", "Networking", "Distributed consensus"], category: "other" },
   github: { name: "GitHub", fullName: "GitHub India", difficulty: "hard", package: "25 - 60 LPA", locations: ["Remote"], type: "Other Top", techStack: ["Ruby on Rails", "Go", "React", "Git internals", "SQL"], category: "other" },
+  twitter: { name: "Twitter (X)", fullName: "X Corp. / Twitter", difficulty: "hard", package: "25 - 60 LPA", locations: ["Bangalore", "Remote"], type: "Product Based", techStack: ["Scala", "Java", "System Design", "Distributed Systems", "React"], category: "product" },
+  zoom: { name: "Zoom", fullName: "Zoom Video Communications", difficulty: "hard", package: "22 - 48 LPA", locations: ["Bangalore", "Remote"], type: "Product Based", techStack: ["C++", "WebRTC", "Video Streaming Protocols", "Java"], category: "product" },
+  slack: { name: "Slack", fullName: "Slack Technologies", difficulty: "hard", package: "24 - 55 LPA", locations: ["Bangalore", "Remote"], type: "Product Based", techStack: ["Java/Go", "React", "System Design", "Electron"], category: "product" },
+  dxc: { name: "DXC Technology", fullName: "DXC Technology India", difficulty: "easy", package: "3.4 - 6 LPA", locations: ["Pan India"], type: "Service Based", techStack: ["Java", "SQL", "Testing", "Cloud Fundamentals"], category: "service" },
+  ltts: { name: "LTTS", fullName: "L&T Technology Services", difficulty: "medium", package: "4.5 - 9 LPA", locations: ["Bangalore", "Mumbai", "Pune"], type: "Service Based", techStack: ["Embedded C", "C++", "MATLAB", "IoT"], category: "service" },
+  stripe: { name: "Stripe", fullName: "Stripe India", difficulty: "hard", package: "30 - 70 LPA", locations: ["Bangalore", "Remote"], type: "FinTech", techStack: ["Ruby", "Go", "Java", "System Design", "Payment APIs"], category: "fintech" },
+  bharatpe: { name: "BharatPe", fullName: "Resilient Innovations (BharatPe)", difficulty: "medium", package: "10 - 22 LPA", locations: ["Delhi", "Bangalore"], type: "FinTech", techStack: ["Node.js", "React", "MySQL", "Fintech API"], category: "fintech" },
+  nykaa: { name: "Nykaa", fullName: "FSN E-Commerce Ventures (Nykaa)", difficulty: "medium", package: "8 - 18 LPA", locations: ["Mumbai", "Bangalore"], type: "E-Commerce", techStack: ["React Native", "Node.js", "PHP", "MySQL"], category: "ecommerce" },
+  oyo: { name: "Oyo Rooms", fullName: "Oyo Rooms (Oravel Stays)", difficulty: "medium", package: "10 - 22 LPA", locations: ["Gurugram", "Bangalore"], type: "Startup", techStack: ["Java", "Node.js", "React", "Microservices"], category: "startup" },
+  blinkit: { name: "Blinkit", fullName: "Blink Commerce Private Limited", difficulty: "hard", package: "14 - 30 LPA", locations: ["Gurugram"], type: "Startup", techStack: ["Go", "Node.js", "React", "PostgreSQL", "GIS / Routing"], category: "startup" },
+  urbancompany: { name: "Urban Company", fullName: "UrbanClap Technologies", difficulty: "medium", package: "12 - 26 LPA", locations: ["Gurugram", "Bangalore"], type: "Startup", techStack: ["Node.js", "React Native", "MongoDB", "Redis"], category: "startup" },
+  huggingface: { name: "Hugging Face", fullName: "Hugging Face Inc.", difficulty: "hard", package: "40 - 120 LPA", locations: ["Remote"], type: "Data & Cloud", techStack: ["Python", "PyTorch", "Transformers", "Rust", "Model Inference"], category: "cloud" },
+  anthropic: { name: "Anthropic", fullName: "Anthropic PBC", difficulty: "hard", package: "70 - 180 LPA", locations: ["Remote"], type: "Data & Cloud", techStack: ["Python", "PyTorch", "LLM alignment", "Distributed systems"], category: "cloud" },
 };
 
 const CUSTOM_DETAILS = {
@@ -351,6 +364,19 @@ const COMPANY_DOMAINS = {
   redhat: "redhat.com",
   vmware: "vmware.com",
   github: "github.com",
+  twitter: "twitter.com",
+  zoom: "zoom.us",
+  slack: "slack.com",
+  dxc: "dxc.com",
+  ltts: "ltts.com",
+  stripe: "stripe.com",
+  bharatpe: "bharatpe.com",
+  nykaa: "nykaa.com",
+  oyo: "oyorooms.com",
+  blinkit: "blinkit.com",
+  urbancompany: "urbancompany.com",
+  huggingface: "huggingface.co",
+  anthropic: "anthropic.com",
 };
 
 const LOGO_SLUGS = {
@@ -453,7 +479,20 @@ const LOGO_SLUGS = {
   ola: "olacabs",
   redhat: "redhat",
   vmware: "vmware",
-  github: "github"
+  github: "github",
+  twitter: "x",
+  zoom: "zoom",
+  slack: "slack",
+  dxc: "dxctechnology",
+  ltts: "ltts",
+  stripe: "stripe",
+  bharatpe: "bharatpe",
+  nykaa: "nykaa",
+  oyo: "oyo",
+  blinkit: "blinkit",
+  urbancompany: "urbancompany",
+  huggingface: "huggingface",
+  anthropic: "anthropic"
 };
 
 function CompanyLogo({ id, size = 24 }) {
@@ -463,7 +502,8 @@ function CompanyLogo({ id, size = 24 }) {
   const isIndianOrOther = [
     "swiggy", "zomato", "zepto", "cred", "coindcx", "phonepe", "paytm", 
     "sharechat", "groww", "meesho", "myntra", "yatra", "makemytrip", 
-    "ola", "ltimindtree", "birlasoft", "mphasis"
+    "ola", "ltimindtree", "birlasoft", "mphasis", "bharatpe", "nykaa", 
+    "oyo", "blinkit", "urbancompany"
   ].includes(id);
 
   let initialSrc = `https://cdn.simpleicons.org/${slug || id}`;
@@ -473,6 +513,15 @@ function CompanyLogo({ id, size = 24 }) {
 
   const [imgSrc, setImgSrc] = useState(initialSrc);
   const [fallbackLevel, setFallbackLevel] = useState(0);
+
+  useEffect(() => {
+    let src = `https://cdn.simpleicons.org/${slug || id}`;
+    if (isIndianOrOther) {
+      src = `https://logos.hunter.io/${domain}`;
+    }
+    setImgSrc(src);
+    setFallbackLevel(0);
+  }, [id, domain, slug, isIndianOrOther]);
 
   const handleImageError = () => {
     if (fallbackLevel === 0) {
@@ -624,6 +673,7 @@ export default function CompanyPrep() {
 
   const handleCategoryChange = (catId) => {
     setSelectedCategory(catId);
+    setSearchQuery("");
     // Auto-select first company in this category
     const firstCompany = Object.keys(COMPANY_REGISTRY).find(
       (key) => COMPANY_REGISTRY[key].category === catId
@@ -646,13 +696,15 @@ export default function CompanyPrep() {
   const diff = DIFFICULTY_CONFIG[company?.difficulty] || DIFFICULTY_CONFIG.easy;
 
   // Filter registry by category, difficulty and search query
+  const trimmedSearch = searchQuery.trim().toLowerCase();
   const filteredCompanyKeys = Object.keys(COMPANY_REGISTRY).filter((key) => {
     const item = COMPANY_REGISTRY[key];
-    // Global search across all categories if searchQuery is active, else filter by tab
-    const matchesCategory = searchQuery ? true : item.category === selectedCategory;
-    const matchesDifficulty = filterDifficulty === "all" ? true : item.difficulty === filterDifficulty;
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          item.fullName.toLowerCase().includes(searchQuery.toLowerCase());
+    // Global search across all categories & difficulties if search query is active
+    const matchesCategory = trimmedSearch ? true : item.category === selectedCategory;
+    const matchesDifficulty = (trimmedSearch || filterDifficulty === "all") ? true : item.difficulty === filterDifficulty;
+    const matchesSearch = !trimmedSearch || 
+                          item.name.toLowerCase().includes(trimmedSearch) || 
+                          item.fullName.toLowerCase().includes(trimmedSearch);
     return matchesCategory && matchesDifficulty && matchesSearch;
   });
 
@@ -888,6 +940,7 @@ export default function CompanyPrep() {
                   onClick={() => {
                     setSelectedCompany(key);
                     setSelectedCategory(item.category);
+                    setSearchQuery("");
                     setActiveTab("overview");
                   }}
                   className={`bg-white dark:bg-[#111827]/50 border rounded-3xl p-6 cursor-pointer hover:-translate-y-1 hover:shadow-md transition duration-300 ${
