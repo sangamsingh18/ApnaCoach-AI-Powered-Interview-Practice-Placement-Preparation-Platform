@@ -53,7 +53,7 @@ function Auth({isModel = false}) {
         transition={{duration:0.25}}
         className={`
         w-full 
-        ${isModel ? "max-w-md p-8 rounded-3xl" : "max-w-lg p-12 rounded-[32px]"}
+        ${isModel ? "max-w-md p-6 sm:p-8 rounded-3xl" : "max-w-lg p-6 sm:p-12 rounded-[32px]"}
         bg-white dark:bg-[#111827] shadow-2xl border border-gray-200 dark:border-gray-800 transition-colors duration-200
       `}>
             <div className='flex items-center justify-center mb-6'>

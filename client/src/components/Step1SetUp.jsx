@@ -196,7 +196,7 @@ export default function Step1SetUp({ onStart }) {
                     initial={{ x: -80, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.7 }}
-                    className='relative bg-gradient-to-br from-green-50 to-green-100 dark:from-[#0a2318] dark:to-[#0c3123] p-12 flex flex-col justify-center transition-colors duration-200'>
+                    className='relative bg-gradient-to-br from-green-50 to-green-100 dark:from-[#0a2318] dark:to-[#0c3123] p-6 sm:p-10 md:p-12 flex flex-col justify-center transition-colors duration-200'>
 
                     <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-6">
                         Start Your AI Interview
@@ -246,7 +246,7 @@ export default function Step1SetUp({ onStart }) {
                     initial={{ x: 80, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.7 }}
-                    className="p-12 bg-white dark:bg-[#111827]/90 transition-colors duration-200">
+                    className="p-6 sm:p-10 md:p-12 bg-white dark:bg-[#111827]/90 transition-colors duration-200">
 
                     <h2 className='text-3xl font-bold text-gray-800 dark:text-white mb-6'>
                         Interview SetUp
@@ -364,7 +364,7 @@ export default function Step1SetUp({ onStart }) {
                             </button>
                         </div>
 
-                        <div className='grid grid-cols-2 gap-4'>
+                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                             <div className='flex flex-col gap-1.5 relative' ref={questionsDropdownRef}>
                                 <label className='text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider'>Questions Count</label>
                                 <div 

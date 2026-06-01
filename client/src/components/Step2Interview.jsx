@@ -329,10 +329,10 @@ setIsSubmitting(false)
 
   return (
     <div className='flex-1 bg-[#f3f3f3] dark:bg-[#090d16] flex items-center justify-center p-4 sm:p-6 transition-colors duration-200'>
-      <div className='w-full max-w-350 min-h-[80vh] bg-white dark:bg-[#111827] rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800/40 flex flex-col lg:flex-row overflow-hidden transition-colors duration-200'>
+      <div className='w-full max-w-6xl min-h-[80vh] bg-white dark:bg-[#111827] rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800/40 flex flex-col lg:flex-row overflow-hidden transition-colors duration-200'>
 
         {/* video section */}
-        <div className='w-full lg:w-[35%] bg-white dark:bg-[#111827] flex flex-col items-center p-6 space-y-6 border-r border-gray-200 dark:border-gray-800 transition-colors duration-200'>
+        <div className='w-full lg:w-[35%] bg-white dark:bg-[#111827] flex flex-col items-center p-6 space-y-6 border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-gray-800 transition-colors duration-200'>
           <div className='w-full max-w-md rounded-2xl overflow-hidden shadow-xl border dark:border-gray-800'>
             <video
               src={videoSource}
@@ -411,7 +411,7 @@ setIsSubmitting(false)
             placeholder="Type your answer here..."
             onChange={(e) => setAnswer(e.target.value)}
             value={answer}
-            className="flex-1 bg-gray-100 dark:bg-[#1f2937]/35 p-4 sm:p-6 rounded-2xl resize-none outline-none border border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-600 transition text-gray-800 dark:text-gray-100"
+            className="flex-1 min-h-[150px] bg-gray-100 dark:bg-[#1f2937]/35 p-4 sm:p-6 rounded-2xl resize-none outline-none border border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-600 transition text-gray-800 dark:text-gray-100"
           />
 
 

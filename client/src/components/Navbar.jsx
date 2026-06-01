@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { motion } from "motion/react"
 import { BsCoin, BsSun, BsMoonStars } from "react-icons/bs";
 import { HiOutlineLogout } from "react-icons/hi";
-import { FaUserAstronaut } from "react-icons/fa";
+import { FaUserAstronaut, FaBars, FaTimes } from "react-icons/fa";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -16,6 +16,7 @@ function Navbar() {
     const {userData} = useSelector((state)=>state.user)
     const [showCreditPopup,setShowCreditPopup] = useState(false)
     const [showUserPopup,setShowUserPopup] = useState(false)
+    const [showMobileMenu, setShowMobileMenu] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [showAuth, setShowAuth] = useState(false);
@@ -72,6 +73,19 @@ function Navbar() {
             </div>
 
             <div className='flex items-center gap-3 md:gap-4 relative flex-shrink-0'>
+                {/* Mobile Menu Toggle Button */}
+                <button
+                    onClick={() => {
+                        setShowMobileMenu(!showMobileMenu);
+                        setShowCreditPopup(false);
+                        setShowUserPopup(false);
+                    }}
+                    className='lg:hidden p-2.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors duration-200 cursor-pointer flex items-center justify-center'
+                    title="Toggle Menu"
+                >
+                    {showMobileMenu ? <FaTimes size={18} /> : <FaBars size={18} />}
+                </button>
+
                 <button
                     onClick={() => {
                         if (!userData) {
@@ -144,6 +158,22 @@ function Navbar() {
                     )}
                 </div>
             </div>
+
+            {/* Mobile Menu Drawer */}
+            {showMobileMenu && (
+                <motion.div 
+                    initial={{ opacity: 0, y: -15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className='absolute top-[calc(100%+12px)] left-4 right-4 bg-white/95 dark:bg-[#111827]/95 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800/80 p-5 flex flex-col gap-3 z-[99] lg:hidden text-left'
+                >
+                    <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/placement-test"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>Placement Exam</button>
+                    <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/roadmap"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>Roadmaps</button>
+                    <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/company-prep"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>Company Preparation</button>
+                    <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/resume-tips"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>ATS Checker</button>
+                    <button onClick={()=>{ setShowMobileMenu(false); if(!userData){ setShowAuth(true); return; } navigate("/guidance"); }} className='w-full text-left font-bold py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer text-sm'>Guidance</button>
+                </motion.div>
+            )}
         </motion.div>
 
         {showAuth && <AuthModel onClose={()=>setShowAuth(false)}/>}

@@ -1005,7 +1005,7 @@ export default function PlacementTestPage() {
                   }`}>
                     {done ? "✓" : t.id}
                   </div>
-                  <span className={`text-[10px] font-bold ${active ? "text-green-700 dark:text-green-400" : "text-gray-400 dark:text-gray-500"}`}>
+                  <span className={`text-[10px] font-bold hidden sm:block ${active ? "text-green-700 dark:text-green-400" : "text-gray-400 dark:text-gray-500"}`}>
                     {t.name.split(" ")[0]}
                   </span>
                 </div>

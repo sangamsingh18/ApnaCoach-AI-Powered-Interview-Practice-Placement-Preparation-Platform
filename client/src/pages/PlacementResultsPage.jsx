@@ -235,7 +235,7 @@ export default function PlacementResultsPage() {
         </div>
 
         {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: "Overall Score", value: `${overallScore.toFixed(1)}/10`, textCls: getScoreColor(overallScore) },
             { label: "Tests Taken", value: `${testData.testScores?.length || 0}/5`, textCls: "text-green-600" },

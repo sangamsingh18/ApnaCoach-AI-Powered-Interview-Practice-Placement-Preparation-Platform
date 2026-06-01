@@ -351,7 +351,7 @@ export default function Guidance() {
         </div>
 
         {/* Core Mode Switcher */}
-        <div className="flex bg-white dark:bg-[#111827]/70 p-1 rounded-2xl border border-gray-200 dark:border-gray-800/40 shadow-sm gap-2 mb-10 transition-colors duration-200">
+        <div className="flex flex-col sm:flex-row bg-white dark:bg-[#111827]/70 p-1.5 rounded-2xl border border-gray-200 dark:border-gray-800/40 shadow-sm gap-2 mb-10 transition-colors duration-200">
           <button
             onClick={() => setMainTab("ai-guidance")}
             className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition flex items-center justify-center gap-2 cursor-pointer ${

@@ -108,19 +108,19 @@ function Pricing() {
 
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-50 to-emerald-50 dark:from-[#090d16] dark:to-[#0f2c20]/30 py-16 px-6 transition-colors duration-200'>
+    <div className='min-h-screen bg-gradient-to-br from-gray-50 to-emerald-50 dark:from-[#090d16] dark:to-[#0f2c20]/30 py-16 px-4 sm:px-6 transition-colors duration-200'>
 
-      <div className='max-w-6xl mx-auto mb-14 flex items-start gap-4'>
+      <div className='max-w-6xl mx-auto mb-14 flex flex-col sm:flex-row items-center sm:items-start gap-4 relative'>
 
-        <button onClick={() => navigate("/")} className='mt-2 p-3 rounded-full bg-white dark:bg-gray-800 border dark:border-gray-700 shadow hover:shadow-md transition'>
+        <button onClick={() => navigate("/")} className='sm:absolute sm:left-0 sm:top-1/2 sm:-translate-y-1/2 p-3 rounded-full bg-white dark:bg-gray-800 border dark:border-gray-700 shadow hover:shadow-md transition cursor-pointer z-10'>
           <FaArrowLeft className='text-gray-600 dark:text-gray-300' />
         </button>
 
         <div className="text-center w-full">
-          <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white">
             Choose Your Plan
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-3 text-lg">
+          <p className="text-gray-500 dark:text-gray-400 mt-3 text-base md:text-lg">
             Flexible pricing to match your interview preparation goals.
           </p>
         </div>

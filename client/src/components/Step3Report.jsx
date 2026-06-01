@@ -174,7 +174,7 @@ function Step3Report({ report }) {
   return (
     <div className='flex-1 bg-linear-to-br from-gray-50 to-green-50 dark:from-[#090d16] dark:to-[#0f2c20]/30 px-4 sm:px-6 lg:px-10 py-8 transition-colors duration-200'>
       <div className='mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
-        <div className='md:mb-10 w-full flex items-start gap-4 flex-wrap'>
+        <div className='flex items-start gap-4 flex-wrap'>
           <button
             onClick={() => navigate("/history")}
             className='mt-1 p-3 rounded-full bg-white dark:bg-gray-800 shadow hover:shadow-md border dark:border-gray-700/50 transition text-gray-600 dark:text-gray-300'

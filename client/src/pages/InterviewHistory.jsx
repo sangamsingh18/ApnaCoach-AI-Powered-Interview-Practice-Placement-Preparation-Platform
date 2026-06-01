@@ -43,7 +43,7 @@ function InterviewHistory() {
 
     return (
         <div className='min-h-screen bg-linear-to-br from-gray-50 to-emerald-50 dark:from-[#090d16] dark:to-[#0f2c20]/30 py-10 transition-colors duration-200' >
-            <div className='w-[90vw] lg:w-[70vw] max-w-[90%] mx-auto'>
+            <div className='w-full max-w-5xl px-4 md:px-6 mx-auto'>
 
                 <div className='mb-10 w-full flex items-start gap-4 flex-wrap'>
                     <button
@@ -62,7 +62,7 @@ function InterviewHistory() {
                 </div>
 
                 {/* Tabs */}
-                <div className='flex gap-6 mb-8 border-b border-gray-200 dark:border-gray-800 pb-px'>
+                <div className='flex flex-wrap sm:flex-nowrap gap-4 sm:gap-6 mb-8 border-b border-gray-200 dark:border-gray-800 pb-px'>
                     <button
                         onClick={() => setActiveTab('interviews')}
                         className={`pb-3 text-base md:text-lg font-semibold border-b-2 transition-all px-2 cursor-pointer ${
