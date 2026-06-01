@@ -15,8 +15,9 @@ export const googleAuth = async (req,res) => {
         if(!user){
             console.log("Creating new user:", email);
             user = await User.create({
-                name , 
-                email
+                name, 
+                email,
+                credits: 100
             })
         } else {
             console.log("Existing user found:", email);
