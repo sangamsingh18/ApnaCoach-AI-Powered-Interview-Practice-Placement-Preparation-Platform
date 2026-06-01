@@ -218,6 +218,7 @@ export default function PlacementTestPage() {
 
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [pendingPath, setPendingPath] = useState("");
+  const [activeTestId, setActiveTestId] = useState(null);
 
   useEffect(() => {
     if (step === "test") {
@@ -412,6 +413,27 @@ export default function PlacementTestPage() {
     setTestAnswers([]);
     if (testNum === 1) {
       setMcqDetails([]);
+      try {
+        const startRes = await axios.post(
+          ServerUrl + "/api/placement/start",
+          {
+            candidateName: form.name,
+            targetRole: form.role,
+            level: form.level,
+            difficultyMode: form.mode
+          },
+          { withCredentials: true }
+        );
+        setActiveTestId(startRes.data.testId);
+        if (startRes.data.creditsLeft !== undefined) {
+          dispatch(setUserData({ ...userData, credits: startRes.data.creditsLeft }));
+        }
+      } catch (err) {
+        console.error("Failed to start placement test:", err);
+        setLoading(false);
+        toast.error(err.response?.data?.message || "Failed to start placement test. Make sure you have at least 50 credits.");
+        return;
+      }
     }
     clearInterval(timerRef.current);
     setTimeLeft(test.time);
@@ -631,10 +653,11 @@ export default function PlacementTestPage() {
       );
       const report = repRes.data;
 
-      // Save complete drive to database and deduct credits
+      // Save complete drive to database and update document
       const saveRes = await axios.post(
         ServerUrl + "/api/placement/save",
         {
+          testId: activeTestId,
           candidateName: form.name,
           targetRole: form.role,
           level: form.level,
@@ -649,7 +672,7 @@ export default function PlacementTestPage() {
         { withCredentials: true }
       );
 
-      toast.success("Placement exam report generated successfully! 50 Credits deducted.");
+      toast.success("Placement exam report generated successfully!");
       
       // Update local coins state
       if (saveRes.data && saveRes.data.creditsLeft !== undefined) {

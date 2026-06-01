@@ -1,7 +1,7 @@
 import PlacementTest from "../models/placement.model.js";
 import User from "../models/user.model.js";
 
-export const savePlacementTest = async (req, res) => {
+export const startPlacementTest = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
     if (!user) {
@@ -9,10 +9,48 @@ export const savePlacementTest = async (req, res) => {
     }
 
     if (user.credits < 50) {
-      return res.status(400).json({ message: "Insufficient credits. Minimum 50 credits required to complete this Placement Mock Exam drive." });
+      return res.status(400).json({ message: "Insufficient credits. Minimum 50 credits required to start this Placement Mock Exam drive." });
+    }
+
+    const { candidateName, targetRole, level, difficultyMode } = req.body;
+
+    if (!candidateName || !targetRole || !level) {
+      return res.status(400).json({ message: "Missing required details to start exam." });
+    }
+
+    const newTest = await PlacementTest.create({
+      userId: user._id,
+      candidateName,
+      targetRole,
+      level,
+      difficultyMode: difficultyMode || "medium",
+      status: "Incompleted",
+      testScores: []
+    });
+
+    user.credits -= 50;
+    await user.save();
+
+    return res.status(201).json({
+      message: "Placement exam started, 50 credits deducted.",
+      creditsLeft: user.credits,
+      testId: newTest._id
+    });
+  } catch (error) {
+    console.error("startPlacementTest error:", error);
+    return res.status(500).json({ message: `Failed to start placement drive: ${error.message || error}` });
+  }
+};
+
+export const savePlacementTest = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
     }
 
     const {
+      testId,
       candidateName,
       targetRole,
       level,
@@ -29,28 +67,52 @@ export const savePlacementTest = async (req, res) => {
       return res.status(400).json({ message: "Missing required placement exam data." });
     }
 
-    const newTest = await PlacementTest.create({
-      userId: user._id,
-      candidateName,
-      targetRole,
-      level,
-      difficultyMode: difficultyMode || "medium",
-      resumeText,
-      resumeData,
-      testScores,
-      allStrengths,
-      allWeaknesses,
-      finalReport,
-      status: "completed"
-    });
+    let test;
+    if (testId) {
+      test = await PlacementTest.findById(testId);
+      if (test) {
+        test.candidateName = candidateName;
+        test.targetRole = targetRole;
+        test.level = level;
+        test.difficultyMode = difficultyMode || "medium";
+        test.resumeText = resumeText;
+        test.resumeData = resumeData;
+        test.testScores = testScores;
+        test.allStrengths = allStrengths;
+        test.allWeaknesses = allWeaknesses;
+        test.finalReport = finalReport;
+        test.status = "completed";
+        await test.save();
+      }
+    }
 
-    user.credits -= 50;
-    await user.save();
+    if (!test) {
+      // Fallback: if no testId was supplied or found, deduct credits and create new one
+      if (user.credits < 50) {
+        return res.status(400).json({ message: "Insufficient credits. Minimum 50 credits required to complete this Placement Mock Exam drive." });
+      }
+      test = await PlacementTest.create({
+        userId: user._id,
+        candidateName,
+        targetRole,
+        level,
+        difficultyMode: difficultyMode || "medium",
+        resumeText,
+        resumeData,
+        testScores,
+        allStrengths,
+        allWeaknesses,
+        finalReport,
+        status: "completed"
+      });
+      user.credits -= 50;
+      await user.save();
+    }
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: "Placement test saved successfully.",
       creditsLeft: user.credits,
-      testId: newTest._id
+      testId: test._id
     });
   } catch (error) {
     console.error("savePlacementTest error:", error);
