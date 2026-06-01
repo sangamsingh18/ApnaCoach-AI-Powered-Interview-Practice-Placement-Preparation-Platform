@@ -136,7 +136,7 @@ function Home() {
                 animate={{ opacity: 1, rotateY: 10, rotateX: 5, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1 }}
                 whileHover={{ rotateY: 2, rotateX: 2, scale: 1.02 }}
-                className='relative w-full max-w-[400px] aspect-[4/5] bg-gradient-to-b from-white to-gray-50 dark:from-slate-900 dark:to-slate-950 border border-gray-200/80 dark:border-gray-800/80 rounded-[36px] shadow-2xl p-6 transform-3d flex flex-col justify-between overflow-hidden group select-none'
+                className='relative w-full max-w-[400px] aspect-[4/5] bg-gradient-to-b from-white to-gray-50 dark:from-slate-900 dark:to-slate-950 border border-gray-200/80 dark:border-gray-800/80 rounded-[36px] shadow-2xl p-6 transform-3d flex flex-col justify-between overflow-visible group select-none'
               >
                 {/* Visual Glass Header */}
                 <div className='flex justify-between items-center border-b border-gray-200/50 dark:border-gray-800/50 pb-4'>
