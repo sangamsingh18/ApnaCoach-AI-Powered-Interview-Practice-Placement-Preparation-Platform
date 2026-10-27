@@ -47,7 +47,7 @@ export const askAi = async (messages, options = {}, retries = 3) => {
         }
 
         const payload = {
-            model: process.env.GROQ_MODEL || "llama-3.3-70b-versatile",
+            model: process.env.GROQ_MODEL || "openai/gpt-oss-20b",
             messages: messages,
             temperature: options.temperature ?? 0.7,
         };
